@@ -25,24 +25,24 @@ public class PlayerControl : MonoBehaviour
 
         transform.position += new Vector3(dir * speed * Time.deltaTime, 0, 0);
 
-        if (Input.GetKeyDown(KeyCode.Space)) Jump(jumpPower);
-    }
-
-    public void Jump(float jumpPower)
-    {
-        GetComponent<Rigidbody2D>().velocity = new Vector2(0, jumpPower);
+        if (Input.GetKeyDown(KeyCode.Space)) Velocity(0, jumpPower);
     }
 
     public void UpsideDown()
     {
         upsideDown = !upsideDown;
-        transform.rotation *= Quaternion.Euler(0,0,180) ;
+        transform.rotation *= Quaternion.Euler(0, 0, 180);
         GetComponent<Rigidbody2D>().gravityScale *= -1;
         jumpPower *= -1;
     }
 
-    public void Teleport(Vector2 dir)
+    public void Teleport(float x, float y)
     {
-        transform.position += (upsideDown) ? new Vector3(dir.x, -dir.y, 0) : (Vector3)dir;
+        transform.position += (upsideDown) ? new Vector3(x, -y, 0) : new Vector3(x, y, 0);
+    }
+
+    public void Velocity(float x, float y)
+    {
+        GetComponent<Rigidbody2D>().velocity = (upsideDown) ? new Vector2(x, -y) : new Vector2(x, y);
     }
 }
