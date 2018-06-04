@@ -12,17 +12,11 @@ public class Teleport : MonoBehaviour
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject.tag != "Player") return;
-
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(other.GetComponent<PlayerControl>().DownKey()))
         {
-            other.GetComponent<PlayerControl>().Teleport(0, -3);
+            other.GetComponent<PlayerControl>().SetVelocity(0, 4);
+            other.GetComponent<PlayerControl>().Teleport(0, -1);
             other.GetComponent<PlayerControl>().UpsideDown();
         }
-    }
-
-    //other.transform.position.y > this.transform.position.y && 
-    IEnumerator Wait(float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
     }
 }
