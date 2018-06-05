@@ -1059,8 +1059,6 @@ GameObject:
   - component: {fileID: 1094373769}
   - component: {fileID: 1094373768}
   - component: {fileID: 1094373767}
-  - component: {fileID: 1094373766}
-  - component: {fileID: 1094373765}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -1095,40 +1093,6 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!68 &1094373765
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1094373762}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: 0, y: 3}
-  - {x: 8, y: 3}
---- !u!68 &1094373766
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1094373762}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: 0, y: -3}
-  - {x: 0, y: 3}
 --- !u!68 &1094373767
 EdgeCollider2D:
   m_ObjectHideFlags: 0
@@ -1146,6 +1110,8 @@ EdgeCollider2D:
   m_Points:
   - {x: -8, y: -3}
   - {x: 0, y: -3}
+  - {x: 0, y: 3}
+  - {x: 8, y: 3}
 --- !u!68 &1094373768
 EdgeCollider2D:
   m_ObjectHideFlags: 0
