@@ -6,11 +6,19 @@ using UnityEngine.UI;					//for fading
 
 public class SceneMgr : MonoBehaviour
 {
+    private Image img;                       //fade用
+    private float fadingSpeed = 1.0f;       //fadingの速さ
+
+    void Start()
+    {
+        img = transform.Find("UI").Find("Canvas").Find("FadeImage").GetComponent<Image>();
+        StartCoroutine(FadeIn());
+    }
+
     #region Fading
-    public Image img;
     private IEnumerator FadeIn()
     {
-        for (float i = 1; i >= 0; i -= Time.unscaledDeltaTime)
+        for (float i = 1; i >= 0; i -= fadingSpeed * Time.unscaledDeltaTime)
         {
             img.color = new Color(0, 0, 0, i);
             yield return null;
@@ -19,7 +27,7 @@ public class SceneMgr : MonoBehaviour
     private IEnumerator FadeOut()
     {
         // fade from opaque to transparent
-        for (float i = 0; i <= 1; i += Time.unscaledDeltaTime)
+        for (float i = 0; i <= 1; i += fadingSpeed * Time.unscaledDeltaTime)
         {
             img.color = new Color(0, 0, 0, i);
             yield return null;
@@ -27,24 +35,28 @@ public class SceneMgr : MonoBehaviour
     }
     #endregion
 
-    public void ReturnTitle()
+    public IEnumerator ReturnTitle()
     {
         StartCoroutine(FadeOut());
-        SceneManager.LoadScene("title");
+        yield return new WaitForSeconds(1 / fadingSpeed);
+        SceneManager.LoadScene("Title");
     }
-    public void ReturnStageSelect()
+    public IEnumerator ReturnStageSelect()
     {
         StartCoroutine(FadeOut());
+        yield return new WaitForSeconds(1 / fadingSpeed);
         SceneManager.LoadScene("StageSelect");
     }
-    public void ReloadCurrent()
+    public IEnumerator ReloadCurrent()
     {
         StartCoroutine(FadeOut());
+        yield return new WaitForSeconds(1 / fadingSpeed);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    public void Next()
+    public IEnumerator Next()
     {
         StartCoroutine(FadeOut());
+        yield return new WaitForSeconds(1 / fadingSpeed);
         int current = SceneManager.GetActiveScene().buildIndex;
         if (current != SceneManager.sceneCountInBuildSettings) SceneManager.LoadScene(current + 1);
         else ReturnTitle();

@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
+    private GameObject mgr;
+
+    void Start()
+    {
+        mgr = GameObject.Find("Manager");
+    }
+
     /// <summary>
     /// Sent each frame where another object is within a trigger collider
     /// attached to this object (2D physics only).
@@ -14,7 +21,7 @@ public class Goal : MonoBehaviour
         if (other.tag != "Player") return;
         if ((other.transform.position - this.transform.position).sqrMagnitude < 0.3f)
         {
-			Debug.Log("clear");
+            mgr.GetComponent<GameMgr>().GameClear();
         }
     }
 }

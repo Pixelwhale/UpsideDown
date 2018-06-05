@@ -2,19 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-	public void GameClear(){
-		Debug.Log("game clear");
-	}
+public class GameMgr : MonoBehaviour
+{
+    public void GameClear()
+    {
+        Debug.Log("game clear");
+        StartCoroutine(GetComponent<SceneMgr>().Next());
+    }
 }
