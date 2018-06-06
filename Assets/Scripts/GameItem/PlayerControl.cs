@@ -6,6 +6,10 @@ public class PlayerControl : MonoBehaviour
 {
     public float speed = 1.0f;
     private bool upsideDown;
+    private bool rightCollide;
+    public bool RightCollide { set { rightCollide = value; } }
+    private bool leftCollide;
+    public bool LeftCollide { set { leftCollide = value; } }
     private bool onGround;
     public bool OnGround { set { onGround = value; } }
     private bool onPortal;
@@ -23,8 +27,8 @@ public class PlayerControl : MonoBehaviour
     {
         Debug.Log(onPortal);
         int dir = 0;
-        if (Input.GetKey(KeyCode.LeftArrow)) dir -= 1;
-        if (Input.GetKey(KeyCode.RightArrow)) dir += 1;
+        if (!rightCollide && Input.GetKey(KeyCode.RightArrow)) dir += 1;
+        if (!leftCollide && Input.GetKey(KeyCode.LeftArrow)) dir -= 1;
 
         transform.position += new Vector3(dir * speed * Time.deltaTime, 0, 0);
 
