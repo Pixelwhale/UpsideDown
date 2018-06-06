@@ -6,6 +6,8 @@ public class PlayerControl : MonoBehaviour
 {
     public float speed = 1.0f;
     private bool upsideDown;
+    private bool onGround;
+    public bool OnGround { set { onGround = value; } }
     private bool onPortal;
     public bool OnPortal { set { onPortal = value; } }
 
@@ -26,6 +28,8 @@ public class PlayerControl : MonoBehaviour
 
         transform.position += new Vector3(dir * speed * Time.deltaTime, 0, 0);
 
+        Debug.Log(onGround);
+        if (!onGround) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!onPortal)
