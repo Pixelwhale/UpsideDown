@@ -12,16 +12,6 @@ public class SceneMgr : Singleton<SceneMgr>
 
     void Awake()
     {
-        /*
-        if (Instance != this)
-        {
-            Destroy(this);
-            return;
-        }
-
-        DontDestroyOnLoad(this.gameObject);
-        */
-        
         //ここで黒テクスチャ作る
         blackTexture = new Texture2D(32, 32, TextureFormat.RGB24, false);
         blackTexture.ReadPixels(new Rect(0, 0, 32, 32), 0, 0, false);
