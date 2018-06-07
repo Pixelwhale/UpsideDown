@@ -6,10 +6,6 @@ public class PlayerControl : MonoBehaviour
 {
     public float speed = 1.0f;
     private bool upsideDown;
-    private bool rightCollide;
-    public bool RightCollide { set { rightCollide = value; } }
-    private bool leftCollide;
-    public bool LeftCollide { set { leftCollide = value; } }
     private bool onGround;
     public bool OnGround { set { onGround = value; } }
     private bool onPortal;
@@ -25,14 +21,13 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(onPortal);
         int dir = 0;
-        if (!rightCollide && Input.GetKey(KeyCode.RightArrow)) dir += 1;
-        if (!leftCollide && Input.GetKey(KeyCode.LeftArrow)) dir -= 1;
+        if (Input.GetKey(KeyCode.RightArrow)) dir += 1;
+        if (Input.GetKey(KeyCode.LeftArrow)) dir -= 1;
 
-        transform.position += new Vector3(dir * speed * Time.deltaTime, 0, 0);
+        float y = GetComponent<Rigidbody2D>().velocity.y;
+        GetComponent<Rigidbody2D>().velocity = new Vector2(dir * speed, y);
 
-        Debug.Log(onGround);
         if (!onGround) return;
         if (Input.GetKeyDown(KeyCode.Space))
         {

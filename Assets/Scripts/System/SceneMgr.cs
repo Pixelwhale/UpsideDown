@@ -2,63 +2,110 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;					//for fading
 
-public class SceneMgr : MonoBehaviour
+public class SceneMgr : Singleton<SceneMgr>
 {
-    private Image img;                       //fade用
-    private float fadingSpeed = 1.0f;       //fadingの速さ
+    private Texture2D blackTexture;
+    private float fadeAlpha = 1;
+    private float fadingSpeed = 1.0f;
+    private bool isFading = false;
 
-    void Start()
+    void Awake()
     {
-        img = transform.Find("UI").Find("Canvas").Find("FadeImage").GetComponent<Image>();
-        StartCoroutine(FadeIn());
-    }
-
-    #region Fading
-    private IEnumerator FadeIn()
-    {
-        for (float i = 1; i >= 0; i -= fadingSpeed * Time.unscaledDeltaTime)
+        /*
+        if (Instance != this)
         {
-            img.color = new Color(0, 0, 0, i);
-            yield return null;
+            Destroy(this);
+            return;
         }
+
+        DontDestroyOnLoad(this.gameObject);
+        */
+        
+        //ここで黒テクスチャ作る
+        blackTexture = new Texture2D(32, 32, TextureFormat.RGB24, false);
+        blackTexture.ReadPixels(new Rect(0, 0, 32, 32), 0, 0, false);
+        blackTexture.SetPixel(0, 0, Color.white);
+        blackTexture.Apply();
     }
-    private IEnumerator FadeOut()
+
+    public void OnGUI()
     {
-        // fade from opaque to transparent
+        if (!isFading) return;
+
+        //透明度を更新して黒テクスチャを描画
+        GUI.color = new Color(0, 0, 0, fadeAlpha);
+        GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), blackTexture);
+    }
+
+    public void ReturnTitle()
+    {
+        LoadScene("Title");
+    }
+    public void ReturnStageSelect()
+    {
+        LoadScene("StageSelect");
+    }
+    public void ReloadCurrent()
+    {
+        LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    public void Next()
+    {
+        LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    #region LoadScene with fading
+    private void LoadScene(int sceneNum)
+    {
+        StartCoroutine(TransScene(sceneNum));
+    }
+    private void LoadScene(string sceneName)
+    {
+        StartCoroutine(TransScene(sceneName));
+    }
+    private IEnumerator TransScene(int sceneNum)
+    {
+        //だんだん暗く
+        isFading = true;
         for (float i = 0; i <= 1; i += fadingSpeed * Time.unscaledDeltaTime)
         {
-            img.color = new Color(0, 0, 0, i);
+            fadeAlpha = i;
             yield return null;
         }
+
+        //シーン切替
+        SceneManager.LoadScene(sceneNum);
+
+        //だんだん明るく
+        for (float i = 1; i >= 0; i -= fadingSpeed * Time.unscaledDeltaTime)
+        {
+            fadeAlpha = i;
+            yield return null;
+        }
+        isFading = false;
+    }
+    private IEnumerator TransScene(string sceneName)
+    {
+        //だんだん暗く
+        isFading = true;
+        for (float i = 0; i <= 1; i += fadingSpeed * Time.unscaledDeltaTime)
+        {
+            fadeAlpha = i;
+            yield return null;
+        }
+
+        //シーン切替
+        SceneManager.LoadScene(sceneName);
+
+        //だんだん明るく
+        for (float i = 1; i >= 0; i -= fadingSpeed * Time.unscaledDeltaTime)
+        {
+            fadeAlpha = i;
+            yield return null;
+        }
+        isFading = false;
     }
     #endregion
 
-    public IEnumerator ReturnTitle()
-    {
-        StartCoroutine(FadeOut());
-        yield return new WaitForSeconds(1 / fadingSpeed);
-        SceneManager.LoadScene("Title");
-    }
-    public IEnumerator ReturnStageSelect()
-    {
-        StartCoroutine(FadeOut());
-        yield return new WaitForSeconds(1 / fadingSpeed);
-        SceneManager.LoadScene("StageSelect");
-    }
-    public IEnumerator ReloadCurrent()
-    {
-        StartCoroutine(FadeOut());
-        yield return new WaitForSeconds(1 / fadingSpeed);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-    public IEnumerator Next()
-    {
-        StartCoroutine(FadeOut());
-        yield return new WaitForSeconds(1 / fadingSpeed);
-        int current = SceneManager.GetActiveScene().buildIndex;
-        if (current != SceneManager.sceneCountInBuildSettings) SceneManager.LoadScene(current + 1);
-        else ReturnTitle();
-    }
 }

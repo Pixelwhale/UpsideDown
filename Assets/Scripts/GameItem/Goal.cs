@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
-    private GameObject mgr;
+    private bool clear = false;
 
     void Start()
     {
-        mgr = GameObject.Find("Manager");
     }
 
     /// <summary>
@@ -18,10 +17,12 @@ public class Goal : MonoBehaviour
     /// <param name="other">The other Collider2D involved in this collision.</param>
     void OnTriggerStay2D(Collider2D other)
     {
+        if (clear) return;
         if (other.tag != "Player") return;
         if ((other.transform.position - this.transform.position).sqrMagnitude < 0.3f)
         {
-            mgr.GetComponent<GameMgr>().GameClear();
+            clear=true;
+            GameMgr.Instance.GameClear();
         }
     }
 }
