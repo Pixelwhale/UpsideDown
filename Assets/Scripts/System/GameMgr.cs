@@ -9,7 +9,4 @@ public class GameMgr : Singleton<GameMgr>
     {
         SceneMgr.Instance.Next();
     }
-
-    
-
 }
